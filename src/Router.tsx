@@ -3,7 +3,7 @@ import Home from "./routes/Home";
 
 function Router() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Switch>
         <Route path="/">
           <Home />
