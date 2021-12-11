@@ -56,11 +56,7 @@ interface IDetailProps {
 }
 
 function CoinInfo() {
-  const { state } = useLocation<IDetailProps>();
   const { coinId } = useParams<{ coinId: string }>();
-
-  console.log("state", state);
-  console.log("coinId", coinId);
 
   const [coinState, setACoinState] = useState<IACoin>();
   const [isLoading, setIsLoading] = useState(true);
@@ -82,17 +78,24 @@ function CoinInfo() {
   return (
     <Wrapper>
       <InnerWrapper>
-        <InfoSpan>아이디: {coinState?.id}</InfoSpan>
-        <InfoSpan>아이디: {coinState?.id}</InfoSpan>
+        <InfoSpan>ID: {coinState?.id}</InfoSpan>
+        <InfoSpan>Name: {coinState?.name}</InfoSpan>
       </InnerWrapper>
       <InnerWrapper>
         <p>
-          {coinState?.name} :{coinState?.symbol}{" "}
+          {coinState?.name} :{coinState?.symbol}
         </p>
       </InnerWrapper>
       <Tabs>
         <Tab>
-          <Link to={`/detail/${coinId}/chart`}>Chart</Link>
+          <Link
+            to={{
+              pathname: `/detail/${coinId}/chart`,
+              state: { data: coinState },
+            }}
+          >
+            Chart
+          </Link>
         </Tab>
         <Tab>
           <Link to={`/detail/${coinId}/price`}>Price</Link>
