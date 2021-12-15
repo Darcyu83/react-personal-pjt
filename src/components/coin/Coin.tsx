@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { ICoins } from "../atoms";
+import { ICoins } from "../../atoms";
 
 const ACoin = styled.li`
   background-color: ${(props) => props.theme.textColor};
@@ -29,7 +29,7 @@ function Coin({ coin }: ICoin) {
       <ACoin key={coin.id}>
         <Link
           to={{
-            pathname: `/detail/${coin.id}`,
+            pathname: `/coin/${coin.id}`,
             state: {
               id: coin.id,
               name: coin.name,

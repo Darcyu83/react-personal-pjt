@@ -60,3 +60,29 @@ export const aCoinState = atom<IACoin[]>({
   key: "aCoinState",
   default: [],
 });
+
+export const todoCateState = atom<string[]>({
+  key: "category",
+  default: [],
+});
+
+export interface IToDo {
+  id: number;
+  startDt?: string;
+  endDt?: string;
+  toDoCnts: string;
+}
+
+export interface IToDoData {
+  [cate: string]: IToDo[];
+}
+
+export const todoData = atom<IToDoData>({
+  key: "todoDAta",
+  default: {},
+});
+
+export const todoLoaded = atom<boolean>({
+  key: "todoLoaded",
+  default: false,
+});

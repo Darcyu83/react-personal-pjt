@@ -1,12 +1,13 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { coinsState } from "../atoms";
+import { coinsState } from "../../atoms";
 import Coin from "./Coin";
 
 const Status = styled.span`
   color: ${(props) => props.theme.accentColor};
-  font-size: 3rem;
+  font-size: 1rem;
   place-self: center;
 `;
 
@@ -28,8 +29,6 @@ function Coins() {
     getData();
   }, []);
 
-  console.log(coins);
-
   return (
     <div>
       <ul>
@@ -42,4 +41,4 @@ function Coins() {
     </div>
   );
 }
-export default Coins;
+export default React.memo(Coins);

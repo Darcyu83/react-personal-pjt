@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import Coins from "../components/Coins";
+import Coins from "../../components/coin/Coins";
 
 const Wrapper = styled.div`
   width: 650px;
@@ -9,6 +9,8 @@ const Wrapper = styled.div`
 function Coinlist() {
   return (
     <Wrapper>
+      <h1>Today's Coins</h1>
+      <hr></hr>
       <Coins />
     </Wrapper>
   );

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, Route, Switch, useLocation, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { aCoinState, coinsState, IACoin } from "../atoms";
+import { aCoinState, coinsState, IACoin } from "../../atoms";
+import Chart from "./Chart";
+import Price from "./Price";
 
 const Wrapper = styled.div`
   display: flex;
@@ -90,7 +92,7 @@ function CoinInfo() {
         <Tab>
           <Link
             to={{
-              pathname: `/detail/${coinId}/chart`,
+              pathname: `/coin/${coinId}/chart`,
               state: { data: coinState },
             }}
           >
@@ -98,9 +100,18 @@ function CoinInfo() {
           </Link>
         </Tab>
         <Tab>
-          <Link to={`/detail/${coinId}/price`}>Price</Link>
+          <Link to={`/coin/${coinId}/price`}>Price</Link>
         </Tab>
       </Tabs>
+
+      <Switch>
+        <Route path="/coin/:coinId/chart">
+          <Chart />
+        </Route>
+        <Route path="/coin/:coinId/price">
+          <Price />
+        </Route>
+      </Switch>
     </Wrapper>
   );
 }

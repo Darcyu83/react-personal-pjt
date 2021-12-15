@@ -3,13 +3,14 @@ import Home from "./routes/Home";
 
 function Router() {
   return (
-    <HashRouter basename={process.env.PUBLIC_URL}>
-      <Switch>
-        <Route path="/">
-          <Home />
-        </Route>
-      </Switch>
-    </HashRouter>
+    <></>
+    // <HashRouter basename={process.env.PUBLIC_URL}>
+    //   <Switch>
+    //     <Route path="/">
+    //       <Home />
+    //     </Route>
+    //   </Switch>
+    // </HashRouter>
   );
 }
 

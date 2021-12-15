@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 import { useLocation, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { darkModeState, IACoin } from "../atoms";
+import { darkModeState, IACoin } from "../../atoms";
 
 const Wrapper = styled.div`
   display: flex;

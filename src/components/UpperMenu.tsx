@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { darkModeState } from "../atoms";
@@ -28,17 +28,39 @@ const ModeToggleBtn = styled.svg`
   width: 1rem;
   height: 1rem;
 `;
+const menuIndicatorAttrs = {
+  borderBottom: "5px solid blue",
+};
 
 function UpperMenu() {
   const [isDarkMode, setIsDarkMode] = useRecoilState(darkModeState);
   const onToggle = () => {
     setIsDarkMode((curr) => !curr);
   };
+  const homeMatch = useRouteMatch("/");
+  const coinListMatch = useRouteMatch("/coinlist");
+  const toDoListMatch = useRouteMatch("/todolist");
+
   return (
     <Wrapper>
       <Menu>
-        <Link to="/"> Home </Link>
-        <span> &nbsp; | &nbsp;</span> <Link to="/coinlist"> Coin List </Link>
+        <Link style={homeMatch?.isExact ? menuIndicatorAttrs : {}} to="/">
+          Home
+        </Link>
+        <span> &nbsp; | &nbsp;</span>
+        <Link
+          style={coinListMatch?.isExact ? menuIndicatorAttrs : {}}
+          to="/coinlist"
+        >
+          Coin List
+        </Link>
+        <span> &nbsp; | &nbsp;</span>
+        <Link
+          style={toDoListMatch?.isExact ? menuIndicatorAttrs : {}}
+          to="/todolist"
+        >
+          ToDo List
+        </Link>
         {isDarkMode ? (
           <BtnWarpper as="button" onClick={onToggle}>
             <ModeToggleBtn
