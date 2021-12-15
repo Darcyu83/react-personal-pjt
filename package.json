@@ -1,6 +1,6 @@
 {
   "name": "nomad-challenge",
-  "homepage": "https://darcyu83.github.io/nomad-coder-challenge/",
+  "homepage": "https://darcyu83.github.io/react-challenge-todolist",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
