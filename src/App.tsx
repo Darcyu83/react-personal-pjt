@@ -1,7 +1,7 @@
 import { useRecoilValue } from "recoil";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { darkModeState } from "./atoms";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, HashRouter, Route, Switch } from "react-router-dom";
 import Home from "./routes/Home";
 import { darkTheme, lightTheme } from "./theme";
 import UpperMenu from "./components/UpperMenu";
@@ -80,10 +80,9 @@ function App() {
     <>
       <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
         <GlobalStyle />
-        {/* <HashRouter basename={process.env.PUBLIC_URL}> */}
-        {/* <HashRouter basename={process.env.PUBLIC_URL}> */}
 
-        <BrowserRouter>
+        <HashRouter basename={process.env.PUBLIC_URL}>
+          {/* <BrowserRouter> */}
           <UpperMenu />
           <Switch>
             <Route path="/coinlist">
@@ -99,8 +98,8 @@ function App() {
               <Home />
             </Route>
           </Switch>
-        </BrowserRouter>
-        {/* </HashRouter> */}
+          {/* </BrowserRouter> */}
+        </HashRouter>
       </ThemeProvider>
     </>
   );
