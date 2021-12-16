@@ -40,6 +40,7 @@ function UpperMenu() {
   const homeMatch = useRouteMatch("/");
   const coinListMatch = useRouteMatch("/coinlist");
   const toDoListMatch = useRouteMatch("/todolist");
+  const motionMatch = useRouteMatch("/motion");
 
   return (
     <Wrapper>
@@ -60,6 +61,13 @@ function UpperMenu() {
           to="/todolist"
         >
           ToDo List
+        </Link>
+        <span> &nbsp; | &nbsp;</span>
+        <Link
+          style={motionMatch?.isExact ? menuIndicatorAttrs : {}}
+          to="/motion"
+        >
+          Framer motion
         </Link>
         {isDarkMode ? (
           <BtnWarpper as="button" onClick={onToggle}>

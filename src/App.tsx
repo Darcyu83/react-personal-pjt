@@ -8,6 +8,7 @@ import UpperMenu from "./components/UpperMenu";
 import Coinlist from "./routes/coin/Coinlist";
 import CoinInfo from "./components/coin/CoinInfo";
 import Todolist from "./routes/todo/Todolist";
+import Motion from "./components/motion/Motion";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -93,6 +94,9 @@ function App() {
             </Route>
             <Route path="/todolist">
               <Todolist />
+            </Route>
+            <Route path="/motion">
+              <Motion />
             </Route>
             <Route path="/">
               <Home />
