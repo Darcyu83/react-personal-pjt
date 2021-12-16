@@ -2,20 +2,20 @@
 
 # Tech-Stack
 
-# react-hooks
+## react-hooks
 
-# react-recoil
+## react-recoil
 
-# react-router-dom@5.3.0
+## react-router-dom@5.3.0
 
-# react-apexcharts
+## react-apexcharts
 
-# styled-components
+## styled-components
 
-# framer-motion + craco
+## framer-motion + craco
 
-# react-hook-form
+## react-hook-form
 
-# react-query
+## react-query
 
-# recoil
+## recoil
