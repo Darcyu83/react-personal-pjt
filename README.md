@@ -1,4 +1,4 @@
-# URL : https://darcyu83.github.io/react-challenge-todolist
+# URL : https://darcyu83.github.io/react-personal-pjt
 
 # Tech-Stack
 
