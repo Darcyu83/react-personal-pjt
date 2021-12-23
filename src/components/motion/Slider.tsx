@@ -23,11 +23,13 @@ const SliderWrapper = styled.div<{ xLength: number }>`
   max-width: 95%;
 `;
 
-const SliderInnerWrapper = styled.div`
+const SliderInnerWrapper = styled.div<{ xLength: number }>`
   margin: 0px auto;
   display: flex;
   justify-content: flex-start;
-
+  align-items: center;
+  width: ${(props) => props.xLength}px;
+  padding: 100px 0px;
   overflow: hidden;
 `;
 
@@ -37,27 +39,35 @@ const CardWrapper = styled(motion.div)<{
   margin: number;
 }>`
   display: float;
-  transition: transform ${(props) => (props.isInitial ? 0 : 1)}s;
+  transition: transform ${(props) => (props.isInitial ? 0 : 0.5)}s;
   transform: translateX(${(props) => -props.xLength}px);
   div {
     margin-right: ${(props) => props.margin}px;
-  }
-  div:first-child {
-    margin-left: ${(props) => props.margin}px;
+    transform-origin: bottom;
   }
 `;
 
-const Card = styled.div<{ width: number; bgPhoto?: string }>`
+const Card = styled(motion.div)<{ width: number; bgPhoto?: string }>`
   width: ${(props) => props.width}px;
   height: 300px;
   background-image: url(${(props) => props.bgPhoto});
   background-size: cover;
   background-position: center center;
+  display: flex;
+  align-items: flex-end;
+  z-index: 9999;
 `;
 
+const CardTitle = styled.p`
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 5px 3px;
+  min-height: 50px;
+  width: 100%;
+`;
 const Btn = styled.button`
   position: absolute;
-  top: 100px;
+  top: 200px;
   width: 40px;
   height: 40px;
   border-radius: 20px;
@@ -67,11 +77,13 @@ function Slider() {
   const CARD_WIDTH = 200;
   const CARD_MARGIN = 3;
   const CARD_OFFSET_WIDTH = CARD_WIDTH + CARD_MARGIN;
-  const CARD_QNTY = 8;
+  const CARD_QNTY = 7; //  1 to 7
   const DATA_QNTY_SHOWED = 20;
   const [currIdx, setCurrIdx] = useState(0);
   const [arrLength, setArrLength] = useState(DATA_QNTY_SHOWED);
-  const [xLength, setXLength] = useState(arrLength * CARD_OFFSET_WIDTH);
+  const [xLength, setXLength] = useState(
+    arrLength * CARD_OFFSET_WIDTH - CARD_MARGIN
+  );
   const [isInitial, setIsInitial] = useState(true);
 
   const { isLoading, data } = useQuery<IGetMoviesResult>(
@@ -103,7 +115,7 @@ function Slider() {
           setIsInitial(true);
           setCurrIdx(0);
           setXLength(arrLength * CARD_OFFSET_WIDTH);
-        }, 1000);
+        }, 700);
       }
       return curr + increment;
     });
@@ -112,8 +124,10 @@ function Slider() {
   return (
     <Wrapper>
       <Title>Slider</Title>
-      <SliderWrapper xLength={CARD_OFFSET_WIDTH * CARD_QNTY}>
-        <SliderInnerWrapper>
+      <SliderWrapper xLength={CARD_OFFSET_WIDTH * CARD_QNTY - CARD_MARGIN}>
+        <SliderInnerWrapper
+          xLength={CARD_OFFSET_WIDTH * CARD_QNTY - CARD_MARGIN}
+        >
           <CardWrapper
             isInitial={isInitial}
             xLength={xLength}
@@ -121,32 +135,32 @@ function Slider() {
           >
             {data?.results.slice(0, DATA_QNTY_SHOWED).map((item, idx) => (
               <Card
+                whileHover={{ scale: 1.2, transition: { duration: 0.5 } }}
                 key={idx}
                 width={CARD_WIDTH}
                 bgPhoto={makeImgPath("w500", item.poster_path)}
               >
-                {item.title}
-                {item.backdrop_path}
+                <CardTitle>{item.title}</CardTitle>
               </Card>
             ))}
             {data?.results.slice(0, DATA_QNTY_SHOWED).map((item, idx) => (
               <Card
+                whileHover={{ scale: 1.2, transition: { duration: 0.5 } }}
                 key={idx}
                 width={CARD_WIDTH}
                 bgPhoto={makeImgPath("w500", item.poster_path)}
               >
-                {item.title}
-                {item.backdrop_path}
+                <CardTitle>{item.title}</CardTitle>
               </Card>
             ))}
             {data?.results.slice(0, DATA_QNTY_SHOWED).map((item, idx) => (
               <Card
+                whileHover={{ scale: 1.2, transition: { duration: 0.5 } }}
                 key={idx}
                 width={CARD_WIDTH}
                 bgPhoto={makeImgPath("w500", item.poster_path)}
               >
-                {item.title}
-                {item.backdrop_path}
+                <CardTitle>{item.title}</CardTitle>
               </Card>
             ))}
           </CardWrapper>
