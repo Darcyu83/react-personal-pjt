@@ -1,5 +1,5 @@
 import { useRecoilValue } from "recoil";
-import { createGlobalStyle, ThemeProvider } from "styled-components";
+import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import { darkModeState } from "./atoms";
 import { BrowserRouter, HashRouter, Route, Switch } from "react-router-dom";
 import Home from "./routes/Home";
@@ -9,6 +9,9 @@ import Coinlist from "./routes/coin/Coinlist";
 import CoinInfo from "./components/coin/CoinInfo";
 import Todolist from "./routes/todo/Todolist";
 import Motion from "./components/motion/Motion";
+
+import AniPresence from "./components/motion/AniPresence";
+import Slider from "./components/motion/Slider";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -74,6 +77,7 @@ a {
   color:inherit;
 }
 `;
+
 function App() {
   const isDarkMode = useRecoilValue(darkModeState);
 
@@ -82,8 +86,7 @@ function App() {
       <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
         <GlobalStyle />
 
-        <HashRouter basename={process.env.PUBLIC_URL}>
-          {/* <BrowserRouter> */}
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
           <UpperMenu />
           <Switch>
             <Route path="/coinlist">
@@ -98,12 +101,23 @@ function App() {
             <Route path="/motion">
               <Motion />
             </Route>
+            <Route path="/animate">
+              <AniPresence />
+            </Route>
+            <Route path="/slider">
+              <Slider />
+            </Route>
+            <Route path="/movies">
+              <Home />
+            </Route>
+            <Route path="/tv">
+              <Motion />
+            </Route>
             <Route path="/">
               <Home />
             </Route>
           </Switch>
-          {/* </BrowserRouter> */}
-        </HashRouter>
+        </BrowserRouter>
       </ThemeProvider>
     </>
   );

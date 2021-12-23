@@ -47,11 +47,6 @@ function Chart() {
 
   console.log(useQuery<IHisData[]>("callAPI", () => getData()));
 
-  const { isLoading, data } = useQuery<IHisData[]>("callAPI", () => getData());
-
-  console.log("coinId", coinId);
-  console.log("state", state?.data);
-
   const sData = {
     series: [
       {

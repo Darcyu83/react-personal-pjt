@@ -86,3 +86,31 @@ export const todoLoaded = atom<boolean>({
   key: "todoLoaded",
   default: false,
 });
+
+// interface IPopularMovies {
+//   page: number;
+//   results: [];
+//   total_pages: number;
+//   total_results: number;
+// }
+
+interface IMovie {
+  id: number;
+  backdrop_path: string;
+  poster_path: string;
+  title: string;
+  overview: string;
+}
+
+export interface IGetMoviesResult {
+  dates: { minimum: string; maximum: string };
+  page: number;
+  results: IMovie[];
+  total_pages: number;
+  total_results: number;
+}
+
+export const popularMovies = atom({
+  key: "popularMovies",
+  default: [],
+});

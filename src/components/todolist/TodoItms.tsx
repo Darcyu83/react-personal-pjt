@@ -1,8 +1,6 @@
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { delLocalToDoData } from "../../api";
-import { IToDo, todoData, todoLoaded } from "../../atoms";
-import RegTodo from "./RegTodo";
+import { todoData } from "../../atoms";
 
 const Wrapper = styled.div`
   display: flex;
@@ -46,7 +44,7 @@ function TodoItms({
   cnts: string;
   cateName: string;
 }) {
-  const [data, setTodoData] = useRecoilState(todoData);
+  const setTodoData = useSetRecoilState(todoData);
   const onClick = (cateName: string, id: number) => {
     setTodoData((allBoards) => {
       const idx = allBoards[cateName].findIndex((board) => board.id === id);

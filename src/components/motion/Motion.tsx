@@ -6,6 +6,7 @@ const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
+  padding-top: 80px;
   justify-content: center;
   align-items: center;
   background: cover;
@@ -20,8 +21,7 @@ const Wrapper = styled.div`
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-
-  border: 1px white solid;
+  width: 50vw;
   gap: 10px;
   div:first-child,
   div:last-child {
@@ -79,10 +79,6 @@ const Btn = styled.button`
   align-self: center;
 `;
 
-const Noti = styled(motion.p)`
-  color: #ff6b6b;
-  font-weight: bold;
-`;
 function Motion() {
   const [idClicked, setIdClicked] = useState("");
   const [prevPrevId, setPrevPrevId] = useState("");
@@ -108,35 +104,37 @@ function Motion() {
   };
 
   return (
-    <Wrapper>
-      <Grid>
-        {[1, 2, 3, 4].map((id, idx) => (
-          <Box
-            key={idx + ""}
-            variants={boxVariants}
-            whileHover="hover"
-            animate="active"
-            layoutId={id + ""}
-            onClick={() => onPop(id + "")}
-          >
-            {idClicked === id + "" ? <Circle layoutId="circle" /> : null}
-          </Box>
-        ))}
-      </Grid>
-      <Btn onClick={onClick}>switch</Btn>
-      <AnimatePresence>
-        {isPoped ? (
-          <Overlay onClick={cancelPopup}>
-            <BigBox layoutId={idClicked}>
-              <Circle
-                layoutId="circle"
-                style={{ scale: 2, backgroundColor: "yellow" }}
-              />
-            </BigBox>
-          </Overlay>
-        ) : null}
-      </AnimatePresence>
-    </Wrapper>
+    <>
+      <Wrapper>
+        <Grid>
+          {[1, 2, 3, 4].map((id, idx) => (
+            <Box
+              key={idx + ""}
+              variants={boxVariants}
+              whileHover="hover"
+              animate="active"
+              layoutId={id + ""}
+              onClick={() => onPop(id + "")}
+            >
+              {idClicked === id + "" ? <Circle layoutId="circle" /> : null}
+            </Box>
+          ))}
+        </Grid>
+        <Btn onClick={onClick}>switch</Btn>
+        <AnimatePresence>
+          {isPoped ? (
+            <Overlay onClick={cancelPopup}>
+              <BigBox layoutId={idClicked}>
+                <Circle
+                  layoutId="circle"
+                  style={{ scale: 2, backgroundColor: "yellow" }}
+                />
+              </BigBox>
+            </Overlay>
+          ) : null}
+        </AnimatePresence>
+      </Wrapper>
+    </>
   );
 }
 

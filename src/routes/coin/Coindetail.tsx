@@ -9,6 +9,7 @@ import Price from "../../components/coin/Price";
 const Wrapper = styled.div`
   width: 80%;
   margin: 0 auto;
+  margin-top: 100px;
 `;
 
 function Coindetail() {

@@ -1,7 +1,7 @@
-import { constSelector, useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { delLocalToDoData } from "../../api";
-import { IToDo, IToDoData, todoData, todoLoaded } from "../../atoms";
+import { IToDo, todoData, todoLoaded } from "../../atoms";
 import RegTodo from "./RegTodo";
 import TodoItms from "./TodoItms";
 

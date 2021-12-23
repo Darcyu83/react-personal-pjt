@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { IToDo, todoData } from "../../atoms";
 import { useRecoilState } from "recoil";
-import { useEffect } from "react";
 import { setLocalToDoData } from "../../api";
 
 const Wrapper = styled.div`

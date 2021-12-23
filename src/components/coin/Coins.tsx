@@ -9,6 +9,7 @@ const Status = styled.span`
   color: ${(props) => props.theme.accentColor};
   font-size: 1rem;
   place-self: center;
+  margin-top: 80px;
 `;
 
 function Coins() {
@@ -27,7 +28,7 @@ function Coins() {
 
   useEffect(() => {
     getData();
-  }, []);
+  });
 
   return (
     <div>
@@ -35,7 +36,7 @@ function Coins() {
         {isLoading ? (
           <Status>Loading...</Status>
         ) : (
-          coins.slice(0, 100).map((coin) => <Coin key={coin.id} coin={coin} />)
+          coins.slice(0, 20).map((coin) => <Coin key={coin.id} coin={coin} />)
         )}
       </ul>
     </div>

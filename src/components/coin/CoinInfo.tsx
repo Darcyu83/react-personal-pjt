@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import { Link, Route, Switch, useLocation, useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { Link, Route, Switch, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { aCoinState, coinsState, IACoin } from "../../atoms";
+import { IACoin } from "../../atoms";
 import Chart from "./Chart";
 import Price from "./Price";
 
 const Wrapper = styled.div`
+  width: 650px;
+  margin: 20px auto;
+  margin-top: 80px;
   display: flex;
   flex-direction: column;
 `;
@@ -51,17 +53,11 @@ const Tab = styled.div`
   }
 `;
 
-interface IDetailProps {
-  id: string;
-  name: string;
-  symbol: string;
-}
-
 function CoinInfo() {
   const { coinId } = useParams<{ coinId: string }>();
 
   const [coinState, setACoinState] = useState<IACoin>();
-  const [isLoading, setIsLoading] = useState(true);
+
   const getData = async () => {
     try {
       const data = await (
@@ -69,13 +65,12 @@ function CoinInfo() {
       ).json();
 
       setACoinState(data);
-      setIsLoading(false);
     } catch (error) {}
   };
 
   useEffect(() => {
     getData();
-  }, []);
+  });
 
   return (
     <Wrapper>

@@ -15,7 +15,6 @@ const ACoin = styled.li`
   }
   &:hover {
     color: #f1c40f;
-    transform: rotateX(360deg);
   }
 `;
 
@@ -40,6 +39,7 @@ function Coin({ coin }: ICoin) {
           <img
             style={{ width: "1.5rem", height: "1.5rem" }}
             src={`https://cryptoicon-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
+            alt={coin.id}
           />
           &nbsp;&nbsp;&nbsp;
           {coin.name}

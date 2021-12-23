@@ -1,4 +1,3 @@
-import { atom } from "recoil";
 import { DefaultTheme } from "styled-components";
 
 export const darkTheme: DefaultTheme = {

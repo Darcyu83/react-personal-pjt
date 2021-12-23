@@ -8,16 +8,21 @@ import RegCate from "../../components/todolist/RegCate";
 
 const Wrapper = styled.div`
   width: 100%;
+  min-height: 100vh;
   height: 100%;
   margin: 0 auto;
-
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   padding: 20px;
+  padding-top: 90px;
   color: ${(props) => props.theme.textColor};
-  background-color: rgba(84, 160, 255, 1);
+  background: linear-gradient(
+    45deg,
+    rgba(255, 0, 0, 0.5),
+    rgba(0, 255, 255, 0.5)
+  );
 `;
 
 const Title = styled.h1`
@@ -45,7 +50,7 @@ function Todolist() {
       setToDoData(JSON.parse(localData));
       setIsTodoLoaded(true);
     }
-  }, []);
+  });
 
   return (
     <Wrapper>
