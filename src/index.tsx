@@ -5,6 +5,7 @@ import { RecoilRoot } from "recoil";
 import App from "./App";
 
 const queryClient = new QueryClient();
+
 ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>

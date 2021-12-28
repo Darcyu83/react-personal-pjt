@@ -98,7 +98,7 @@ function Movies() {
     <AsBody>
       <AsContainer>
         <>
-          <AnimatePresence initial={false} custom={direction}>
+          <AnimatePresence initial={false} custom={direction} >
             <Img
               src={images[page]}
               key={page}

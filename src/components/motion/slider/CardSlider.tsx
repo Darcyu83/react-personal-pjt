@@ -1,53 +1,56 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
 import styled from "styled-components";
-import { getPopularMoviesAPI, makeImgPath } from "../../api";
-import { IGetMoviesResult } from "../../atoms";
+import { getMoviesListAPI, makeImgPath } from "../../../api";
+import { IGetMoviesResult } from "../../../atoms";
 
-const Wrapper = styled.div`
-  padding: 20px;
-  padding-top: 100px;
-  background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5));
-  width: 100vw;
-  height: 100vh;
+const InnerWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
-const Title = styled.h1``;
+const Title = styled.h1`
+  font-weight: bold;
+`;
 
-const SliderWrapper = styled.div<{ xLength: number }>`
+const SliderWrapper = styled.div<{ xLength?: number }>`
   margin: 0px auto;
   display: flex;
   justify-content: flex-start;
   width: ${(props) => props.xLength}px;
+  min-width: ${(props) => props.xLength}px;
   position: relative;
   max-width: 95%;
 `;
 
-const SliderInnerWrapper = styled.div<{ xLength: number }>`
+const SliderInnerWrapper = styled.div<{ xLength?: number }>`
   margin: 0px auto;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   width: ${(props) => props.xLength}px;
+  position: relative;
   padding: 100px 0px;
   overflow: hidden;
 `;
 
 const CardWrapper = styled(motion.div)<{
-  xLength: number;
-  isInitial: boolean;
-  margin: number;
+  xLength?: number;
+  isInitial?: boolean;
+  margin?: number;
 }>`
   display: float;
   transition: transform ${(props) => (props.isInitial ? 0 : 0.5)}s;
-  transform: translateX(${(props) => -props.xLength}px);
+  transform: translateX(${(props) => (props.xLength ? -props.xLength : 0)}px);
   div {
     margin-right: ${(props) => props.margin}px;
     transform-origin: bottom;
   }
 `;
 
-const Card = styled(motion.div)<{ width: number; bgPhoto?: string }>`
+const Card = styled(motion.div)<{ width?: number; bgPhoto?: string }>`
   width: ${(props) => props.width}px;
   height: 300px;
   background-image: url(${(props) => props.bgPhoto});
@@ -73,7 +76,11 @@ const Btn = styled.button`
   border-radius: 20px;
 `;
 
-function Slider() {
+function CardSlider({
+  cate,
+}: {
+  cate: "now_playing" | "popular" | "top_rated";
+}) {
   const CARD_WIDTH = 200;
   const CARD_MARGIN = 3;
   const CARD_OFFSET_WIDTH = CARD_WIDTH + CARD_MARGIN;
@@ -86,14 +93,11 @@ function Slider() {
   );
   const [isInitial, setIsInitial] = useState(true);
 
-  const { isLoading, data } = useQuery<IGetMoviesResult>(
-    ["movies", "slide"],
-    getPopularMoviesAPI
+  const { isLoading, data } = useQuery<IGetMoviesResult>(["movies", cate], () =>
+    getMoviesListAPI(cate)
   );
 
-  console.log(data?.results);
-
-  const onClick = (
+  const onNextCard = (
     increment: number,
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -105,7 +109,6 @@ function Slider() {
         curr + newlength < 0
         ? curr
         : curr + newlength;
-      // return curr + newlength >= arrLength * CARD_OFFSET_WIDTH ? 0 : 0;
     });
 
     setCurrIdx((curr) => {
@@ -122,8 +125,8 @@ function Slider() {
   };
 
   return (
-    <Wrapper>
-      <Title>Slider</Title>
+    <InnerWrapper>
+      <Title> "{cate}" Slider /w infinite loop</Title>
       <SliderWrapper xLength={CARD_OFFSET_WIDTH * CARD_QNTY - CARD_MARGIN}>
         <SliderInnerWrapper
           xLength={CARD_OFFSET_WIDTH * CARD_QNTY - CARD_MARGIN}
@@ -165,15 +168,15 @@ function Slider() {
             ))}
           </CardWrapper>
         </SliderInnerWrapper>
-        <Btn onClick={(e) => onClick(-1, e)} style={{ left: "-20px" }}>
+        <Btn onClick={(e) => onNextCard(-1, e)} style={{ left: "-20px" }}>
           Prev
         </Btn>
-        <Btn onClick={(e) => onClick(1, e)} style={{ right: "-20px" }}>
+        <Btn onClick={(e) => onNextCard(1, e)} style={{ right: "-20px" }}>
           Next
         </Btn>
       </SliderWrapper>
-    </Wrapper>
+    </InnerWrapper>
   );
 }
 
-export default Slider;
+export default CardSlider;

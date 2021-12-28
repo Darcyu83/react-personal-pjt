@@ -21,7 +21,6 @@ const Wrapper = styled.div`
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  width: 50vw;
   gap: 10px;
   div:first-child,
   div:last-child {
@@ -30,8 +29,8 @@ const Grid = styled.div`
 `;
 
 const Box = styled(motion.div)`
-  width: 200px;
-  height: 100px;
+  min-width: 200px;
+  min-height: 100px;
   background-color: white;
   border-radius: 15px;
   display: flex;

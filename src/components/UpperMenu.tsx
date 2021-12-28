@@ -1,6 +1,6 @@
 import { motion, useAnimation, useViewportScroll } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { darkModeState } from "../atoms";
@@ -18,7 +18,7 @@ const Wrapper = styled(motion.div)`
   position: fixed;
   top: 0;
   padding: 20px;
-  z-index: 999;
+  z-index: 100;
   div:last-child {
     padding: 0;
   }
@@ -32,9 +32,6 @@ const Grid = styled.div`
 
   div:first-child {
     justify-content: flex-start;
-  }
-  div:nth-child(2) {
-    justify-content: flex-end;
   }
 `;
 
@@ -50,6 +47,7 @@ const Logo = styled.div`
   justify-content: center;
   align-items: center;
   padding: 5px;
+  cursor: pointer;
 `;
 
 const Svg = styled(motion.svg)`
@@ -62,14 +60,15 @@ const Svg = styled(motion.svg)`
 
 const HiddenMenu = styled(motion.div)`
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
   position: absolute;
-  right: 0;
-  top: 50%;
+  left: 0px;
+  top: 60%;
   a {
     min-width: fit-content;
-    margin: 0px 3px;
+    margin: 0px;
+    margin-right: 3px;
   }
 `;
 
@@ -87,7 +86,7 @@ const ToggleContainer = styled(motion.div)`
   bottom: 0;
   color: white;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 `;
 
@@ -151,9 +150,13 @@ function UpperMenu() {
   const motionMatch = useRouteMatch("/motion");
   const animateMatch = useRouteMatch("/animate");
   const sliderMatch = useRouteMatch("/slider");
+  const history = useHistory();
 
   const onHover = () => {
-    setIsHovered((curr) => !curr);
+    setIsHovered(true);
+  };
+  const onLeave = () => {
+    setIsHovered(false);
   };
 
   const menuAnimation = useAnimation();
@@ -167,6 +170,10 @@ function UpperMenu() {
       }
     });
   });
+
+  const onGoHome = () => {
+    history.push("/");
+  };
   return (
     <Wrapper
       variants={menuVariants}
@@ -176,7 +183,7 @@ function UpperMenu() {
     >
       <Grid>
         <InnerWrapper>
-          <Logo>
+          <Logo onClick={onGoHome}>
             <Svg
               aria-hidden="true"
               focusable="false"
@@ -259,10 +266,10 @@ function UpperMenu() {
             </Svg>
           </Logo>
 
-          <Link style={homeMatch?.isExact ? menuIndicatorAttrs : {}} to="/">
+          {/* <Link style={homeMatch?.isExact ? menuIndicatorAttrs : {}} to="/">
             Home
           </Link>
-          <span> &nbsp; | &nbsp;</span>
+          <span> &nbsp; | &nbsp;</span> */}
           <Link
             style={moviesMatch?.isExact ? menuIndicatorAttrs : {}}
             to="/movies"
@@ -270,57 +277,58 @@ function UpperMenu() {
             Movies
           </Link>
           <span> &nbsp; | &nbsp;</span>
-          <Link style={tvMatch?.isExact ? menuIndicatorAttrs : {}} to="/tv">
-            TV
-          </Link>
-        </InnerWrapper>
-        <InnerWrapper
-          onHoverStart={onHover}
-          onHoverEnd={onHover}
-          transition={{ type: "linear", duration: 0.5 }}
-        >
-          <MenuTitle>Challenge</MenuTitle>
-          <HiddenMenu
-            variants={subMenuAnimate}
-            initial="exit"
-            animate={isHovered ? "enter" : "exit"}
+          <InnerWrapper
+            onHoverStart={onHover}
+            onHoverEnd={onLeave}
+            transition={{ type: "linear", duration: 0.5 }}
           >
-            <Link
-              style={coinListMatch?.isExact ? menuIndicatorAttrs : {}}
-              to="/coinlist"
+            <MenuTitle>Challenge</MenuTitle>
+            <HiddenMenu
+              variants={subMenuAnimate}
+              initial="exit"
+              animate={isHovered ? "enter" : "exit"}
             >
-              Coin List
-            </Link>
-            <span> &nbsp; | &nbsp;</span>
-            <Link
-              style={toDoListMatch?.isExact ? menuIndicatorAttrs : {}}
-              to="/todolist"
-            >
-              ToDo List
-            </Link>
-            <span> &nbsp; | &nbsp;</span>
-            <Link
-              style={motionMatch?.isExact ? menuIndicatorAttrs : {}}
-              to="/motion"
-            >
-              Framer motion
-            </Link>
-            <span> &nbsp; | &nbsp;</span>
-            <Link
-              style={animateMatch?.isExact ? menuIndicatorAttrs : {}}
-              to="/animate"
-            >
-              AnimatePresence
-            </Link>
-            <span> &nbsp; | &nbsp;</span>
-            <Link
-              style={sliderMatch?.isExact ? menuIndicatorAttrs : {}}
-              to="/slider"
-            >
-              Slider
-            </Link>
-          </HiddenMenu>
+              <Link
+                style={coinListMatch?.isExact ? menuIndicatorAttrs : {}}
+                to="/coinlist"
+              >
+                Coin List
+              </Link>
+              <span> &nbsp; | &nbsp;</span>
+              <Link
+                style={toDoListMatch?.isExact ? menuIndicatorAttrs : {}}
+                to="/todolist"
+              >
+                ToDo List
+              </Link>
+              <span> &nbsp; | &nbsp;</span>
+              <Link
+                style={motionMatch?.isExact ? menuIndicatorAttrs : {}}
+                to="/motion"
+              >
+                Framer motion
+              </Link>
+              <span> &nbsp; | &nbsp;</span>
+              <Link
+                style={animateMatch?.isExact ? menuIndicatorAttrs : {}}
+                to="/animate"
+              >
+                AnimatePresence
+              </Link>
+              <span> &nbsp; | &nbsp;</span>
+              <Link
+                style={sliderMatch?.isExact ? menuIndicatorAttrs : {}}
+                to="/slider"
+              >
+                Slider
+              </Link>
+            </HiddenMenu>
+          </InnerWrapper>
+          {/* <Link style={tvMatch?.isExact ? menuIndicatorAttrs : {}} to="/tv">
+            TV
+          </Link> */}
         </InnerWrapper>
+
         <InnerWrapper>
           <ToggleContainer>
             <ToggleBackground

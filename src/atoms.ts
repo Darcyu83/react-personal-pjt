@@ -94,12 +94,15 @@ export const todoLoaded = atom<boolean>({
 //   total_results: number;
 // }
 
-interface IMovie {
+export interface IMovie {
   id: number;
   backdrop_path: string;
   poster_path: string;
   title: string;
   overview: string;
+  genres: { id: number; name: string }[];
+  release_date: string;
+  vote_average: number;
 }
 
 export interface IGetMoviesResult {

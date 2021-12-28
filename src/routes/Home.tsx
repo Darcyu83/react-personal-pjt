@@ -1,10 +1,19 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { convertTransitionToAnimationOptions } from "framer-motion/types/animation/utils/transitions";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+import {
+  Link,
+  useHistory,
+  useLocation,
+  useParams,
+  useRouteMatch,
+} from "react-router-dom";
+import { constSelector } from "recoil";
 import styled from "styled-components";
-import { makeImgPath, getPopularMoviesAPI } from "../api";
-import { IGetMoviesResult } from "../atoms";
+import { makeImgPath, getMoviesListAPI } from "../api";
+import { IGetMoviesResult, IMovie } from "../atoms";
+import PageSlider from "../components/motion/slider/PageSlider";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -12,186 +21,202 @@ const Wrapper = styled.div`
   background-image: linear-gradient(rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 1));
 `;
 
-const Loader = styled.div`
-  height: 20vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const InnerWrapper = styled.div<{ bgPath: string | undefined }>`
-  margin: 0px auto;
-  width: 100%;
-  min-height: 80vh;
+const Banner = styled.div<{ bgPath: string | undefined }>`
   background-image: url(${(props) => props.bgPath});
   background-size: cover;
   background-position: center center;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  padding: 500px 150px 10px 150px;
-`;
-
-const Slider = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin: 10px auto;
-  padding: 5px;
-  min-width: 1050px;
   width: 100%;
-  height: 400px;
-  border-top: 1px white solid;
-  position: relative;
-  background-color: rgba(0, 0, 0, 0.5);
-  overflow: hidden;
-  div:first-child {
-    left: -20px;
-  }
-  div:last-child {
-    right: -20px;
-  }
-`;
+  height: 70vh;
 
-const Row = styled(motion.div)`
-  display: flex;
-  justify-content: center;
-
-  width: 100%;
-  height: 100%;
-  border: 1px solid red;
-  position: absoulte;
-`;
-
-const MovieCard = styled.div<{ bgPath: string }>`
-  padding: 10px;
-  flex: 1 1 15%;
-  min-width: 200px;
-  color: white;
-  border: solid 1px rgba(255, 255, 255, 0.3);
-  margin: 5px;
-  background-image: url(${(props) => props.bgPath});
-  background-position: center center;
-  background-size: cover;
   display: flex;
   align-items: flex-end;
 `;
 
-const Describe = styled.p`
-  display: block;
-  background-color: rgba(0, 0, 0, 0.7);
-  width: 100%;
+const BannerInfo = styled.div`
+  padding: 20px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
 `;
 
-const Btn = styled.div`
-  font-weight: bold;
-  font-size: 2rem;
+const BannerTitle = styled.h1`
+  font-size: 3rem;
+`;
+
+const BannerDesc = styled.p``;
+
+const Overlay = styled.div`
+  position: fixed;
+  display: block;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 101;
+`;
+
+const OutterBox = styled.div`
+  width: 60%;
+  min-width: 900px;
+  min-height: 550px;
+  height: 80%;
+  background-color: rgba(0, 0, 0, 0.8);
   color: white;
-  width: 50px;
-  height: 50px;
+  margin: 0 auto;
+  top: 100px;
+  position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 25px;
-  background-color: rgba(255, 255, 255, 0.3);
-  position: absolute;
-  border: solid rgba(255, 255, 255, 0.3) 1px;
-  cursor: pointer;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 102;
+  left: 50%;
+  transform: translate(-50%, 0);
+`;
+const InfoPoster = styled.img`
+  width: 40%;
+  margin-right: 10px;
+`;
+const InnerBox = styled.div`
+  width: 60%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  a {
+    padding: 20px;
+    width: fit-content;
+    color: ${(props) => props.theme.accentColor};
+    align-self: flex-end;
+  }
+`;
+const InfoTitle = styled.h1`
+  font-size: 2.5rem;
+`;
+const InfoDesc = styled.p`
+  font-size: 1rem;
 `;
 
-const SectionTitle = styled.h1`
-  color: white;
-  font-weight: bold;
-`;
-
-const rowVariants = {
-  enter: { x: 1050 },
-  center: { x: 0 },
-  exit: { x: -1050 },
-};
 function Home() {
-  const OFF_SET = 5;
-  const { isLoading, data } = useQuery<IGetMoviesResult>(
-    ["movies", "popularMovies"],
-    getPopularMoviesAPI
+  const nowPlaying = useQuery<IGetMoviesResult>(["movies", "now_playing"], () =>
+    getMoviesListAPI("now_playing")
+  );
+  const popular = useQuery<IGetMoviesResult>(["movies", "popular"], () =>
+    getMoviesListAPI("popular")
+  );
+  const topRated = useQuery<IGetMoviesResult>(["movies", "top_rated"], () =>
+    getMoviesListAPI("top_rated")
   );
 
-  const [moviePage, setMoviePage] = useState(0);
-  const [tvPage, setTvPage] = useState(0);
+  const history = useHistory();
 
-  const maxIdx = data ? Math.ceil((data.results.length - 1) / OFF_SET) - 1 : 0;
-  console.log(maxIdx);
+  const nowPlayingData = nowPlaying.data?.results;
+  const [detailInfo, setDetailInfo] = useState<IMovie>();
+  const popMatch = useRouteMatch<{ movieId: string; cate: string }>("/pop");
+  const { state } = useLocation<{ movieId: string; cate: string }>();
+  console.log("popMath", popMatch);
 
-  const onLeft = (sliderId: string) => {
-    if (sliderId === "movie") {
-      setMoviePage((curr) => (curr <= 0 ? maxIdx : curr - 1));
-    } else if (sliderId === "tv") {
-      setTvPage((curr) => (curr <= 0 ? maxIdx : curr - 1));
+  const getMatchedData = () => {
+    if (popMatch) {
+      console.log(" state.cate", state.movieId, state.cate);
+
+      if (nowPlaying && popular && topRated) {
+        if (state.cate === "now_playing") {
+          return nowPlaying;
+        } else if (state.cate === "popular") {
+          return popular;
+        } else if (state.cate === "top_rated") {
+          return topRated;
+        }
+      }
     }
   };
 
-  const onRight = (sliderId: string) => {
-    if (sliderId === "movie") {
-      setMoviePage((curr) => (curr >= maxIdx ? 0 : curr + 1));
-    } else if (sliderId === "tv") {
-      setTvPage((curr) => (curr >= maxIdx ? 0 : curr + 1));
-    }
+  useEffect(() => {
+    const matchedData = getMatchedData();
+
+    console.log("useEffect Data", matchedData?.data?.results);
+    setDetailInfo(
+      matchedData?.data?.results.find(
+        (movie) => movie.id === Number(state.movieId)
+      )
+    );
+  }, [popMatch]);
+
+  const onClearOverlay = () => {
+    history.push("/");
   };
 
   return (
     <Wrapper>
-      {!isLoading ? (
+      {!nowPlaying.isLoading ? (
         <>
-          <InnerWrapper
+          <Banner
             bgPath={
-              data
-                ? makeImgPath("original", data.results[0]?.backdrop_path)
+              nowPlayingData
+                ? makeImgPath("original", nowPlayingData[0]?.backdrop_path)
                 : ""
             }
           >
-            <SectionTitle>Movie : Popular</SectionTitle>
-            <Slider>
-              <AnimatePresence>
-                <Row
-                  key={moviePage}
-                  variants={rowVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{ duration: 4, type: "tween" }}
+            <BannerInfo>
+              <BannerTitle>
+                <Link
+                  to={{
+                    pathname: `/pop`,
+                    state: {
+                      movieId: nowPlayingData && nowPlayingData[0].id,
+                      cate: "now_playing",
+                    },
+                  }}
                 >
-                  {data ? (
-                    data.results
-                      .slice(moviePage * OFF_SET, moviePage * OFF_SET + OFF_SET)
-                      .map((movie) => (
-                        <MovieCard
-                          key={movie.id}
-                          bgPath={makeImgPath("w200", movie.poster_path)}
-                        >
-                          <Describe>{movie.title}</Describe>
-                        </MovieCard>
-                      ))
-                  ) : (
-                    <Loader>Loading...</Loader>
-                  )}
-                </Row>
-              </AnimatePresence>
-              <Btn onClick={(e) => onLeft("movie")}>&lt;</Btn>
-              <Btn onClick={() => onRight("movie")}>&gt;</Btn>
-            </Slider>
-          </InnerWrapper>
-          <InnerWrapper
-            bgPath={
-              data ? makeImgPath("original", data.results[0].backdrop_path) : ""
-            }
-          >
-            <SectionTitle>Tv : Popular</SectionTitle>
-            <Slider></Slider>
-          </InnerWrapper>
+                  {nowPlayingData
+                    ? nowPlayingData[0]?.title.toUpperCase()
+                    : null}
+                </Link>
+              </BannerTitle>
+              <BannerDesc>
+                {nowPlayingData ? nowPlayingData[0]?.overview : null}
+              </BannerDesc>
+            </BannerInfo>
+            : null
+          </Banner>
+          <PageSlider cate="now_playing" />
+          <PageSlider cate="popular" />
+          <PageSlider cate="top_rated" />
         </>
       ) : null}
+      <AnimatePresence>
+        {popMatch && (
+          <>
+            <Overlay onClick={onClearOverlay}></Overlay>
+            <OutterBox>
+              {detailInfo ? (
+                <>
+                  <InfoPoster
+                    src={makeImgPath("w500", detailInfo.poster_path)}
+                  />
+                  <InnerBox>
+                    <InfoTitle>{detailInfo.title}</InfoTitle>
+                    <InfoDesc>{detailInfo.overview}</InfoDesc>
+                    <Link
+                      to={{
+                        pathname: `/detail${detailInfo.id}`,
+                        state: {
+                          movieId: detailInfo.id,
+                        },
+                      }}
+                    >
+                      Go Detail &gt;&gt;
+                    </Link>
+                  </InnerBox>
+                </>
+              ) : null}
+            </OutterBox>
+          </>
+        )}
+      </AnimatePresence>
+      <ReactQueryDevtools initialIsOpen />
     </Wrapper>
   );
 }

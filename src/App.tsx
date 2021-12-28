@@ -11,7 +11,9 @@ import Todolist from "./routes/todo/Todolist";
 import Motion from "./components/motion/Motion";
 
 import AniPresence from "./components/motion/AniPresence";
-import Slider from "./components/motion/Slider";
+import Slider from "./routes/slider/Slider";
+import MovieDetail from "./components/movie/MovieDetail";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -109,6 +111,9 @@ function App() {
             </Route>
             <Route path="/movies">
               <Home />
+            </Route>
+            <Route path="/detail:movieId">
+              <MovieDetail />
             </Route>
             <Route path="/tv">
               <Motion />

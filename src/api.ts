@@ -21,12 +21,25 @@ export const delLocalToDoData = (
   }
 };
 
-export function getPopularMoviesAPI() {
+export interface IMovieCategory {
+  cate: "now_playing" | "popular" | "top_rated";
+}
+
+export function getMoviesListAPI(
+  cate: "now_playing" | "popular" | "top_rated"
+) {
   return fetch(
-    `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=1`
+    `https://api.themoviedb.org/3/movie/${cate}?api_key=${API_KEY}&language=en-US&page=1`
   ).then((res) => res.json());
 }
 
 export function makeImgPath(size: string, imgPath: string) {
   return `https://image.tmdb.org/t/p/${size}/${imgPath}`;
+}
+
+export function getMovieDetail(movieId: string) {
+  return fetch(`
+  https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=en-US`).then(
+    (response) => response.json()
+  );
 }
