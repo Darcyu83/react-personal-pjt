@@ -2,18 +2,21 @@ import { useRecoilValue } from "recoil";
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import { darkModeState } from "./atoms";
 import { BrowserRouter, HashRouter, Route, Switch } from "react-router-dom";
-import Home from "./routes/Home";
+import Movie from "./routes/Movie";
 import { darkTheme, lightTheme } from "./theme";
 import UpperMenu from "./components/UpperMenu";
 import Coinlist from "./routes/coin/Coinlist";
 import CoinInfo from "./components/coin/CoinInfo";
 import Todolist from "./routes/todo/Todolist";
 import Motion from "./components/motion/Motion";
-
 import AniPresence from "./components/motion/AniPresence";
 import Slider from "./routes/slider/Slider";
 import MovieDetail from "./components/movie/MovieDetail";
 import { QueryClient, QueryClientProvider } from "react-query";
+import ResponsiveLayout from "./routes/ResponsiveLayout";
+import GridFlexCss from "./components/responsive/GridFlexCss";
+import MovieHome from "./routes/movie/MovieHome";
+import ResponsiveGrid from "./components/responsive/ResponsiveGrid";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -103,6 +106,12 @@ function App() {
             <Route path="/motion">
               <Motion />
             </Route>
+            <Route path="/responsive">
+              <ResponsiveGrid />
+            </Route>
+            <Route path="/grid">
+              <GridFlexCss />
+            </Route>
             <Route path="/animate">
               <AniPresence />
             </Route>
@@ -110,16 +119,17 @@ function App() {
               <Slider />
             </Route>
             <Route path="/movies">
-              <Home />
+              <Movie />
+            </Route>
+            <Route path="/pop">
+              <Movie />
             </Route>
             <Route path="/detail:movieId">
               <MovieDetail />
             </Route>
-            <Route path="/tv">
-              <Motion />
-            </Route>
+
             <Route path="/">
-              <Home />
+              <MovieHome />
             </Route>
           </Switch>
         </BrowserRouter>

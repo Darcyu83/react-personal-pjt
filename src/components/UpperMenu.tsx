@@ -27,7 +27,7 @@ const Wrapper = styled(motion.div)`
 const Grid = styled.div`
   display: grid;
   padding: 20px;
-  grid-template-columns: 1fr 80px 60px;
+  grid-template-columns: 1fr 80px;
   position: relative;
 
   div:first-child {
@@ -150,6 +150,8 @@ function UpperMenu() {
   const motionMatch = useRouteMatch("/motion");
   const animateMatch = useRouteMatch("/animate");
   const sliderMatch = useRouteMatch("/slider");
+  const responsiveMatch = useRouteMatch("/responsive");
+  const gridMatch = useRouteMatch("/grid");
   const history = useHistory();
 
   const onHover = () => {
@@ -266,15 +268,26 @@ function UpperMenu() {
             </Svg>
           </Logo>
 
-          {/* <Link style={homeMatch?.isExact ? menuIndicatorAttrs : {}} to="/">
+          <Link style={homeMatch?.isExact ? menuIndicatorAttrs : {}} to="/">
             Home
           </Link>
-          <span> &nbsp; | &nbsp;</span> */}
+          <span> &nbsp; | &nbsp;</span>
           <Link
             style={moviesMatch?.isExact ? menuIndicatorAttrs : {}}
             to="/movies"
           >
             Movies
+          </Link>
+          <span> &nbsp; | &nbsp;</span>
+          <Link
+            style={responsiveMatch?.isExact ? menuIndicatorAttrs : {}}
+            to="/responsive"
+          >
+            Responsive Grid
+          </Link>
+          <span> &nbsp; | &nbsp;</span>
+          <Link style={gridMatch?.isExact ? menuIndicatorAttrs : {}} to="/grid">
+            Responsive Layout
           </Link>
           <span> &nbsp; | &nbsp;</span>
           <InnerWrapper

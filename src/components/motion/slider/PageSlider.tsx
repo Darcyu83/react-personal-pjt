@@ -151,21 +151,24 @@ function PageSlider({ cate }: IMovieCategory) {
   const [[currPageIdx, direction], setCurrPage] = useState([0, 0]);
 
   const onPaginate = (idx: number) => {
-    // next page set with idx ;
-
-    //apply animate
+    setIsAnimeComplete((curr) => !curr);
     setCurrPage(([curr, direction]) => {
       return [idx, idx > curr ? 1 : -1];
     });
   };
 
   const onNextPage = (increment: number) => {
-    let newIdx = 0;
+    let newIdx = currPageIdx + increment;
+    let dataLength = 0;
+    if (data) dataLength = Math.ceil(data.results.length / CARD_QNTY) - 1;
+    if (newIdx < 0 || newIdx > dataLength) return;
+    setIsAnimeComplete((curr) => !curr);
+
     setCurrPage(([curr, direction]) => {
-      newIdx = curr + increment;
-      let dataLength = 0;
-      if (data) dataLength = Math.ceil(data.results.length / CARD_QNTY) - 1;
-      newIdx = newIdx > dataLength || newIdx < 0 ? curr : newIdx;
+      newIdx =
+        curr + increment > dataLength || curr + increment < 0
+          ? curr
+          : curr + increment;
       return [newIdx, increment];
     });
   };
@@ -194,6 +197,12 @@ function PageSlider({ cate }: IMovieCategory) {
     return result;
   };
 
+  const [isAnimeComplete, setIsAnimeComplete] = useState(true);
+
+  const onExitcomplete = () => {
+    setIsAnimeComplete(true);
+  };
+
   return (
     <InnerWrapper>
       <Title> "{cate.toUpperCase()}" Slider /w Pagination</Title>
@@ -201,51 +210,57 @@ function PageSlider({ cate }: IMovieCategory) {
         <SliderInnerWrapper
           xLength={(CARD_OFFSET_WIDTH + CARD_MARGIN) * CARD_QNTY}
         >
-          <AnimatePresence initial={false} custom={direction}>
-            <CardWrapper
-              key={currPageIdx}
-              custom={direction}
-              margin={CARD_MARGIN}
-              variants={pageSliderVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
-                opacity: { duration: 0.2 },
-              }}
-            >
-              {data?.results
-                .slice(
-                  currPageIdx * CARD_QNTY,
-                  currPageIdx * CARD_QNTY + CARD_QNTY
-                )
-                .map((movie, idx) => (
-                  <>
-                    <Link
-                      to={{
-                        pathname: `/pop`,
-                        state: {
-                          movieId: movie.id,
-                          cate: cate,
-                        },
-                      }}
-                    >
-                      <Card
-                        key={idx}
-                        width={200}
-                        bgPhoto={makeImgPath("w500", movie.poster_path)}
-                        whileHover={{
-                          scale: 1.1,
+          <AnimatePresence
+            initial={false}
+            custom={direction}
+            onExitComplete={onExitcomplete}
+          >
+            {isAnimeComplete && (
+              <CardWrapper
+                key={currPageIdx}
+                custom={direction}
+                margin={CARD_MARGIN}
+                variants={pageSliderVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  x: { type: "spring", stiffness: 300, damping: 30 },
+                  opacity: { duration: 0.2 },
+                }}
+              >
+                {data?.results
+                  .slice(
+                    currPageIdx * CARD_QNTY,
+                    currPageIdx * CARD_QNTY + CARD_QNTY
+                  )
+                  .map((movie, idx) => (
+                    <>
+                      <Link
+                        to={{
+                          pathname: `/pop`,
+                          state: {
+                            movieId: movie.id,
+                            cate: cate,
+                          },
                         }}
-                        transition={{ duration: 0.3 }}
                       >
-                        <CardTitle>{movie.title}</CardTitle>
-                      </Card>
-                    </Link>
-                  </>
-                ))}
-            </CardWrapper>
+                        <Card
+                          key={idx}
+                          width={200}
+                          bgPhoto={makeImgPath("w500", movie.poster_path)}
+                          whileHover={{
+                            scale: 1.1,
+                          }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <CardTitle>{movie.title}</CardTitle>
+                        </Card>
+                      </Link>
+                    </>
+                  ))}
+              </CardWrapper>
+            )}
           </AnimatePresence>
         </SliderInnerWrapper>
       </SliderWrapper>

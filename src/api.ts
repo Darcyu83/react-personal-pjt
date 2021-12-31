@@ -33,7 +33,8 @@ export function getMoviesListAPI(
   ).then((res) => res.json());
 }
 
-export function makeImgPath(size: string, imgPath: string) {
+export function makeImgPath(size: string, imgPath?: string) {
+  if (!imgPath) return;
   return `https://image.tmdb.org/t/p/${size}/${imgPath}`;
 }
 

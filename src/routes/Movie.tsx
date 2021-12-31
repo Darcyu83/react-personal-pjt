@@ -58,7 +58,7 @@ const Overlay = styled.div`
 
 const OutterBox = styled.div`
   width: 60%;
-  min-width: 900px;
+
   min-height: 550px;
   height: 80%;
   background-color: rgba(0, 0, 0, 0.8);
@@ -98,7 +98,7 @@ const InfoDesc = styled.p`
   font-size: 1rem;
 `;
 
-function Home() {
+function Movie() {
   const nowPlaying = useQuery<IGetMoviesResult>(["movies", "now_playing"], () =>
     getMoviesListAPI("now_playing")
   );
@@ -145,7 +145,7 @@ function Home() {
   }, [popMatch]);
 
   const onClearOverlay = () => {
-    history.push("/");
+    history.goBack();
   };
 
   return (
@@ -179,7 +179,6 @@ function Home() {
                 {nowPlayingData ? nowPlayingData[0]?.overview : null}
               </BannerDesc>
             </BannerInfo>
-            : null
           </Banner>
           <PageSlider cate="now_playing" />
           <PageSlider cate="popular" />
@@ -216,9 +215,9 @@ function Home() {
           </>
         )}
       </AnimatePresence>
-      <ReactQueryDevtools initialIsOpen />
+      {/* <ReactQueryDevtools initialIsOpen /> */}
     </Wrapper>
   );
 }
 
-export default Home;
+export default Movie;

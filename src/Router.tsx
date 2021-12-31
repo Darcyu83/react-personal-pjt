@@ -1,5 +1,4 @@
 import { HashRouter, Route, Switch } from "react-router-dom";
-import Home from "./routes/Home";
 
 function Router() {
   return (
