@@ -4,13 +4,15 @@ import { useQuery } from "react-query";
 import styled from "styled-components";
 import { getMoviesListAPI, makeImgPath } from "../../api";
 import { IGetMoviesResult } from "../../atoms";
+
+// Import Responsive Grid basis Components
 import {
-  FullWidthSection,
   GridBox,
   GridItem,
   GridWrapper,
   MaxWidthSection,
 } from "../responsive/GridFlexCss";
+
 import Select from "../common/Select";
 
 const Title = styled.h1`
@@ -19,6 +21,7 @@ const Title = styled.h1`
   padding: 20px 10px;
 `;
 
+//Customize component with styled-components
 const MovieCard = styled(GridItem)`
   width: 100%;
   background-image: url(${(props) => props.bgPhoto});
@@ -102,11 +105,6 @@ function GridCss() {
   const [qntyNowShowed, setQntyNowShowed] = useState(10);
   const [qntyTopShowed, setQntyTopShowed] = useState(10);
 
-  const onToggleOpen = () => {
-    // setIsOpen((curr) => !curr);
-    // setAnimeKey((curr) => curr + 1);
-  };
-
   const { isLoading: isLoadingNowPlaying, data: nowPlayingData } =
     useQuery<IGetMoviesResult>(["movies", "now_playing"], () =>
       getMoviesListAPI("now_playing")
@@ -145,8 +143,6 @@ function GridCss() {
   };
 
   const onIsNowComplete = () => setIsNowComplete((curr) => !curr);
-  const onIsTopComplete = () => setIsTopComplete((curr) => !curr);
-
   const onNowListChange = (e: React.FormEvent<HTMLSelectElement>) => {
     const {
       currentTarget: { value },
@@ -154,6 +150,9 @@ function GridCss() {
     setPpageNowPlay(0);
     setQntyNowShowed(Number(value) <= 0 ? 10 : Number(value));
   };
+
+  const onIsTopComplete = () => setIsTopComplete((curr) => !curr);
+
   const onTopListChange = (e: React.FormEvent<HTMLSelectElement>) => {
     const {
       currentTarget: { value },

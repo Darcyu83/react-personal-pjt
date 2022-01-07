@@ -134,7 +134,12 @@ const pageSliderVariants = {
     };
   },
 };
+
 function PageSlider({ cate }: IMovieCategory) {
+  const { isLoading, data } = useQuery<IGetMoviesResult>(["movies", cate], () =>
+    getMoviesListAPI(cate)
+  );
+
   const CARD_WIDTH = 200;
   const CARD_MARGIN = 3;
   const CARD_OFFSET_WIDTH = CARD_WIDTH + CARD_MARGIN;
@@ -142,10 +147,6 @@ function PageSlider({ cate }: IMovieCategory) {
   const DATA_QNTY_SHOWED = 20;
 
   const [arrLength, setArrLength] = useState(DATA_QNTY_SHOWED);
-
-  const { isLoading, data } = useQuery<IGetMoviesResult>(["movies", cate], () =>
-    getMoviesListAPI(cate)
-  );
 
   // page slider
   const [[currPageIdx, direction], setCurrPage] = useState([0, 0]);
@@ -239,10 +240,7 @@ function PageSlider({ cate }: IMovieCategory) {
                       <Link
                         to={{
                           pathname: `/pop`,
-                          state: {
-                            movieId: movie.id,
-                            cate: cate,
-                          },
+                          state: { movieId: movie.id, cate: cate },
                         }}
                       >
                         <Card

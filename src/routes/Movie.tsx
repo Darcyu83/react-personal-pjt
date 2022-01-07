@@ -113,8 +113,11 @@ function Movie() {
 
   const nowPlayingData = nowPlaying.data?.results;
   const [detailInfo, setDetailInfo] = useState<IMovie>();
+
   const popMatch = useRouteMatch<{ movieId: string; cate: string }>("/pop");
+
   const { state } = useLocation<{ movieId: string; cate: string }>();
+
   console.log("popMath", popMatch);
 
   const getMatchedData = () => {
@@ -198,16 +201,11 @@ function Movie() {
                   <InnerBox>
                     <InfoTitle>{detailInfo.title}</InfoTitle>
                     <InfoDesc>{detailInfo.overview}</InfoDesc>
-                    <Link
-                      to={{
-                        pathname: `/detail${detailInfo.id}`,
-                        state: {
-                          movieId: detailInfo.id,
-                        },
-                      }}
-                    >
+                    
+                    <Link to={`/detail${detailInfo.id}`}>
                       Go Detail &gt;&gt;
                     </Link>
+                    
                   </InnerBox>
                 </>
               ) : null}
@@ -215,7 +213,6 @@ function Movie() {
           </>
         )}
       </AnimatePresence>
-      {/* <ReactQueryDevtools initialIsOpen /> */}
     </Wrapper>
   );
 }

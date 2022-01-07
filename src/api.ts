@@ -33,14 +33,28 @@ export function getMoviesListAPI(
   ).then((res) => res.json());
 }
 
-export function makeImgPath(size: string, imgPath?: string) {
-  if (!imgPath) return;
-  return `https://image.tmdb.org/t/p/${size}/${imgPath}`;
-}
-
 export function getMovieDetail(movieId: string) {
   return fetch(`
   https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=en-US`).then(
     (response) => response.json()
   );
+}
+
+export function makeImgPath(size: string, imgPath?: string) {
+  if (!imgPath) return;
+  return `https://image.tmdb.org/t/p/${size}/${imgPath}`;
+}
+
+export function getLocationOnLatLng(lat: number, lng: number) {
+  let tempLat = 37.402056;
+  let tempLng = 127.108212;
+  let tempLcName = `우리집`;
+
+  return fetch(
+    `https://map.kakao.com/link/map/${tempLcName},${tempLat},${tempLng}`
+  );
+}
+
+export function getLocatioOnId(id: number) {
+  return fetch(`https://map.kakao.com/link/map/${id}`);
 }

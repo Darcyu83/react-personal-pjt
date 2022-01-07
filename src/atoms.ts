@@ -113,7 +113,7 @@ export interface IGetMoviesResult {
   total_results: number;
 }
 
-export const popularMovies = atom({
+export const popularMovies = atom<IGetMoviesResult[]>({
   key: "popularMovies",
   default: [],
 });

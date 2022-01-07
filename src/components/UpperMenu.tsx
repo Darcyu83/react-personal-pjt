@@ -137,6 +137,7 @@ const subMenuAnimate = {
 
 function UpperMenu() {
   const [isDarkMode, setIsDarkMode] = useRecoilState(darkModeState);
+
   const [isHovered, setIsHovered] = useState(false);
   const { scrollY } = useViewportScroll();
   const onToggle = () => {
@@ -152,6 +153,7 @@ function UpperMenu() {
   const sliderMatch = useRouteMatch("/slider");
   const responsiveMatch = useRouteMatch("/responsive");
   const gridMatch = useRouteMatch("/grid");
+  const kakaoMapMatch = useRouteMatch("/kakaomap");
   const history = useHistory();
 
   const onHover = () => {
@@ -288,6 +290,13 @@ function UpperMenu() {
           <span> &nbsp; | &nbsp;</span>
           <Link style={gridMatch?.isExact ? menuIndicatorAttrs : {}} to="/grid">
             Responsive Layout
+          </Link>
+          <span> &nbsp; | &nbsp;</span>
+          <Link
+            style={kakaoMapMatch?.isExact ? menuIndicatorAttrs : {}}
+            to="/kakaomap"
+          >
+            KakaoMap
           </Link>
           <span> &nbsp; | &nbsp;</span>
           <InnerWrapper

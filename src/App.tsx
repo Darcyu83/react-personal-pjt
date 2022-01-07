@@ -17,6 +17,7 @@ import ResponsiveLayout from "./routes/ResponsiveLayout";
 import GridFlexCss from "./components/responsive/GridFlexCss";
 import MovieHome from "./routes/movie/MovieHome";
 import ResponsiveGrid from "./components/responsive/ResponsiveGrid";
+import KakaoMap from "./routes/map/KakaoMap";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -127,7 +128,9 @@ function App() {
             <Route path="/detail:movieId">
               <MovieDetail />
             </Route>
-
+            <Route path="/kakaomap">
+              <KakaoMap />
+            </Route>
             <Route path="/">
               <MovieHome />
             </Route>

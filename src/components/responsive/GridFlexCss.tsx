@@ -137,6 +137,7 @@ export default function GridFlexCss() {
             <GridItem startCol={1} spanCol={2} startRow={1} spanRow={2}>
               GridItem1
             </GridItem>
+
             <GridItem startCol={3} spanCol={2} startRow={0} spanRow={0}>
               GridItem2
             </GridItem>

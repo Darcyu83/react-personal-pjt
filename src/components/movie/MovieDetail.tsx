@@ -79,13 +79,11 @@ const ReleasedDate = styled.p`
 
 function MovieDetail() {
   const { movieId } = useParams<{ movieId: string }>();
-  console.log("movieId", movieId);
-
   const { isLoading, data } = useQuery<IMovie>(["detail", movieId], () =>
     getMovieDetail(movieId)
   );
 
-  console.log(data);
+
   return (
     <Wrapper>
       {data ? (
